@@ -5,108 +5,69 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "trips")
-public class Trip {
+@Table(name = "participants")
+public class Participant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(nullable = false)
-    private String title;
-
-    @Column
-    private String description;
-
-    @Column(name = "start_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date startDate;
-
-    @Column(name = "end_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date endDate;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "created_by", nullable = false)
-    private User createdBy;
+    @JoinColumn(name = "trip_id", nullable = false)
+    private Trip trip;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(nullable = false)
+    private String role;
+
+    @Column(name = "joined_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private Date joinedAt;
 
-    @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
-
-    public Trip() {
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
+    public Participant() {
+        this.joinedAt = new Date();
     }
 
-    public Trip(String title, String description, Date startDate, Date endDate, User createdBy) {
-        this.title = title;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.createdBy = createdBy;
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
+    public Participant(User user, Trip trip, String role) {
+        this.user = user;
+        this.trip = trip;
+        this.role = role;
+        this.joinedAt = new Date();
     }
 
     public UUID getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public User getUser() {
+        return user;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public String getDescription() {
-        return description;
+    public Trip getTrip() {
+        return trip;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTrip(Trip trip) {
+        this.trip = trip;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public String getRole() {
+        return role;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getJoinedAt() {
+        return joinedAt;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-   
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
