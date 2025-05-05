@@ -29,7 +29,6 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    // Конструкторы
     public User() {
         this.createdAt = new Date();
         this.updatedAt = new Date();
@@ -43,7 +42,7 @@ public class User {
         this.updatedAt = new Date();
     }
 
-    // Геттеры и сеттеры
+
     public UUID getId() {
         return id;
     }
