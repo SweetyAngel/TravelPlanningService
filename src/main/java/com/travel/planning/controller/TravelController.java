@@ -1,41 +1,36 @@
 package com.travel.planning.controller;
 
 import com.travel.planning.entity.Travel;
-import com.travel.planning.service.TravelService;
+import com.travel.planning.repository.TravelRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/travels")
+@RequestMapping("/api/travel")
 public class TravelController {
-    private final TravelService travelService;
 
-    public TravelController(TravelService travelService) {
-        this.travelService = travelService;
-    }
+    @Autowired
+    private TravelRepository travelRepository;
 
-    @GetMapping
-    public List<Travel> getAllTravels() {
-        return travelService.findAll();
-    }
+    @GetMapping("/getRooms")
+    public ResponseEntity<List<Travel>> getRooms(@RequestParam Long userId) {
+        try {
+            // 1. Получаем все путешествия пользователя из БД
+            List<Travel> userRooms = travelRepository.findByUserId(userId);
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Travel> getTravelById(@PathVariable Long id) {
-        return travelService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+            // 2. Если список пуст - возвращаем 204 No Content
+            if (userRooms.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
 
-    @PostMapping
-    public Travel createTravel(@RequestBody Travel travel) {
-        return travelService.save(travel);
-    }
+            // 3. Возвращаем список путешествий
+            return ResponseEntity.ok(userRooms);
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTravel(@PathVariable Long id) {
-        travelService.deleteById(id);
-        return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
