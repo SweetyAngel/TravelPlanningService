@@ -2,6 +2,7 @@ package com.travel.planning.repository;
 
 import com.travel.planning.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.UUID;
 
 import java.util.Optional;
 

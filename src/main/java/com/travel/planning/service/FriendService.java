@@ -6,6 +6,7 @@ import com.travel.planning.repository.FriendRepository;
 import com.travel.planning.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.UUID;
 
 import java.time.LocalDateTime;
 import java.util.List;

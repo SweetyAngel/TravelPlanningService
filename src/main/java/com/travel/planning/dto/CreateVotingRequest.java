@@ -1,6 +1,7 @@
 package com.travel.planning.dto;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class CreateVotingRequest {
     private String title;
