@@ -1,52 +1,37 @@
+package com.travel.planning.controller;
+
+import com.travel.planning.dto.UserDto;
+import com.travel.planning.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @PostMapping("/regUser")
-    public ResponseEntity<?> registerUser(@RequestParam String username,
-                                          @RequestParam String password) {
-
-        // 1. Валидация входных данных
-        if (username == null || username.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("Username cannot be empty");
+    // POST /api/users/create?username={}&password={}
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createUser(@RequestParam String username, @RequestParam String password) {
+        if (userService.existsByUsername(username)) {
+            throw new RuntimeException("Username already exists");
         }
-
-        if (password == null || password.length() < 8) {
-            return ResponseEntity.badRequest().body("Password must be at least 8 characters long");
-        }
-
-        // 2. Проверка, что пользователь не существует
-        if (userRepository.existsByUsername(username)) {
-            return ResponseEntity.badRequest().body("Username already taken");
-        }
-
-        // 3. Создание нового пользователя
-        User newUser = new User();
-        newUser.setUsername(username);
-        newUser.setPassword(passwordEncoder.encode(password)); // Хеширование пароля
-        newUser.setCreatedAt(LocalDateTime.now());
-        newUser.setRoles(Collections.singleton(Role.USER)); // По умолчанию роль USER
-
-        try {
-            // 4. Сохранение пользователя в БД
-            userRepository.save(newUser);
-
-            // 5. Можно вернуть DTO без пароля
-            UserDto userDto = new UserDto(newUser.getId(), newUser.getUsername(), newUser.getRoles());
-
-            return ResponseEntity.ok(userDto);
-
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Registration failed: " + e.getMessage());
-        }
+        userService.createUser(username, password);
     }
 
-    // Класс DTO для безопасного возврата данных пользователя
-    public record UserDto(Long id, String username, Set<Role> roles) {}
+    // GET /api/users/checkLogin?username={}&password={}
+    @GetMapping("/checkLogin")
+    public int checkLogin(@RequestParam String username, @RequestParam String password) {
+        return userService.checkLogin(username, password) ? 1 : 0;
+    }
+
+    // GET /api/users/get?id={}
+    @GetMapping("/get")
+    public UserDto getUserById(@RequestParam String id) {
+        return userService.getUserById(UUID.fromString(id));
+    }
 }
