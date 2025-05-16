@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,9 +17,8 @@ public class VotingService {
     @Autowired
     private VotingRepository votingRepository;
 
-    public void createVoting(UUID createdBy, String title, String description, LocalDate endDate) {
+    public void createVoting(Long createdBy, String title, String description, LocalDate endDate) {
         Voting voting = new Voting();
-        voting.setId(UUID.randomUUID());
         voting.setTitle(title);
         voting.setDescription(description);
         voting.setStartDate(LocalDate.now());
@@ -31,7 +29,7 @@ public class VotingService {
         votingRepository.save(voting);
     }
 
-    public List<VotingDto> getVotingsByUserId(UUID userId) {
+    public List<VotingDto> getVotingsByUserId(Long userId) {
         return votingRepository.findByCreatedBy(userId).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());

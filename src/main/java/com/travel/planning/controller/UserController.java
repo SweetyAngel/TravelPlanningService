@@ -5,7 +5,6 @@ import com.travel.planning.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -33,6 +32,6 @@ public class UserController {
     // GET /api/users/get?id={}
     @GetMapping("/get")
     public UserDto getUserById(@RequestParam String id) {
-        return userService.getUserById(UUID.fromString(id));
+        return userService.getUserById(Long.parseLong(id));
     }
 }

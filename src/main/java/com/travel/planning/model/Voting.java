@@ -3,14 +3,14 @@ package com.travel.planning.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "votings")
 public class Voting {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String title;
@@ -24,7 +24,7 @@ public class Voting {
     private LocalDate endDate;
 
     @Column(name = "created_by", nullable = false)
-    private UUID createdBy;
+    private Long createdBy;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -32,8 +32,8 @@ public class Voting {
     public Voting() {}
 
     // Геттеры и сеттеры
-    public UUID getId() { return id; }
-    public void setId(UUID id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
@@ -47,8 +47,8 @@ public class Voting {
     public LocalDate getEndDate() { return endDate; }
     public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
 
-    public UUID getCreatedBy() { return createdBy; }
-    public void setCreatedBy(UUID createdBy) { this.createdBy = createdBy; }
+    public Long getCreatedBy() { return createdBy; }
+    public void setCreatedBy(Long createdBy) { this.createdBy = createdBy; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
-
 @Service
 public class UserService {
 
@@ -27,7 +25,6 @@ public class UserService {
 
     public UserDto createUser(String username, String password) {
         User user = new User();
-        user.setId(UUID.randomUUID());
         user.setUsername(username);
         user.setPassword(password);
         user.setCreatedAt(LocalDateTime.now());
@@ -35,7 +32,7 @@ public class UserService {
         return convertToDto(userRepository.save(user));
     }
 
-    public UserDto getUserById(UUID id) {
+    public UserDto getUserById(Long id) {
         return userRepository.findById(id).map(this::convertToDto).orElse(null);
     }
 

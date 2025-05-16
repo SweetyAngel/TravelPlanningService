@@ -2,20 +2,20 @@ package com.travel.planning.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "participants")
 public class Participant {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "user_id", nullable = false)
-    private UUID userId;
+    private Long userId;
 
     @Column(name = "voting_id", nullable = false)
-    private UUID votingId;
+    private Long votingId;
 
     @Column(nullable = false)
     private String role;
@@ -26,14 +26,14 @@ public class Participant {
     public Participant() {}
 
     // Геттеры и сеттеры
-    public UUID getId() { return id; }
-    public void setId(UUID id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public UUID getUserId() { return userId; }
-    public void setUserId(UUID userId) { this.userId = userId; }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 
-    public UUID getVotingId() { return votingId; }
-    public void setVotingId(UUID votingId) { this.votingId = votingId; }
+    public Long getVotingId() { return votingId; }
+    public void setVotingId(Long votingId) { this.votingId = votingId; }
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }

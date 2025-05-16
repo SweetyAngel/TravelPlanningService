@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/votings")
@@ -28,7 +27,7 @@ public class VotingController {
 
         try {
             votingService.createVoting(
-                    UUID.fromString(id),
+                    Long.parseLong(id),
                     title,
                     description,
                     LocalDate.parse(end_date)
@@ -41,6 +40,6 @@ public class VotingController {
     // GET /api/votings/get?id={}
     @GetMapping("/get")
     public List<VotingDto> getVotingsByUserId(@RequestParam String id) {
-        return votingService.getVotingsByUserId(UUID.fromString(id));
+        return votingService.getVotingsByUserId(Long.parseLong(id));
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/friends")
@@ -23,16 +22,16 @@ public class FriendController {
             @RequestParam String friend1_id,
             @RequestParam String friend2_id) {
 
-        if (friendService.isAlreadyFriends(UUID.fromString(friend1_id), UUID.fromString(friend2_id))) {
+        if (friendService.isAlreadyFriends(Long.parseLong(friend1_id), Long.parseLong(friend2_id))) {
             throw new RuntimeException("Friendship already exists");
         }
 
-        friendService.createFriendship(UUID.fromString(friend1_id), UUID.fromString(friend2_id));
+        friendService.createFriendship(Long.parseLong(friend1_id), Long.parseLong(friend2_id));
     }
 
     // GET /api/friends/get?id={}
     @GetMapping("/get")
     public List<FriendDto> getFriendsById(@RequestParam String id) {
-        return friendService.getFriendsByUserId(UUID.fromString(id));
+        return friendService.getFriendsByUserId(Long.parseLong(id));
     }
 }
