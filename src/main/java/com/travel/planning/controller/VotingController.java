@@ -4,6 +4,7 @@ import com.travel.planning.dto.VotingDto;
 import com.travel.planning.service.VotingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ public class VotingController {
     // POST /api/votings/create?id={}&title={}&description={}&end_date={}
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createVoting(
+    public ResponseEntity<?> createVoting(
             @RequestParam String id,
             @RequestParam String title,
             @RequestParam String description,
@@ -32,8 +33,9 @@ public class VotingController {
                     description,
                     LocalDate.parse(end_date)
             );
+            return ResponseEntity.status(HttpStatus.CREATED).body("");
         } catch (Exception e) {
-            throw new RuntimeException("Failed to create voting");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("");
         }
     }
 

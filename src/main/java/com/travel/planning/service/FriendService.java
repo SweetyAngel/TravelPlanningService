@@ -25,9 +25,6 @@ public class FriendService {
     }
 
     public void createFriendship(Long friend1Id, Long friend2Id) {
-        if (!userRepository.existsById(friend1Id) || !userRepository.existsById(friend2Id)) {
-            throw new RuntimeException("One or both users do not exist");
-        }
 
         Friend friend = new Friend();
         friend.setFriend1Id(friend1Id);

@@ -1,9 +1,11 @@
 package com.travel.planning.controller;
 
 import com.travel.planning.dto.UserDto;
+import com.travel.planning.model.User;
 import com.travel.planning.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,11 +18,12 @@ public class UserController {
     // POST /api/users/create?username={}&password={}
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<?> createUser(@RequestParam String username, @RequestParam String password) {
         if (userService.existsByUsername(username)) {
-            throw new RuntimeException("Username already exists");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("");
         }
         userService.createUser(username, password);
+        return ResponseEntity.status(HttpStatus.CREATED).body("");
     }
 
     // GET /api/users/checkLogin?username={}&password={}
@@ -31,7 +34,8 @@ public class UserController {
 
     // GET /api/users/get?id={}
     @GetMapping("/get")
-    public UserDto getUserById(@RequestParam String id) {
-        return userService.getUserById(Long.parseLong(id));
+    public ResponseEntity<UserDto> getUserById(@RequestParam Long id) {
+        System.out.println(id);
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 }
